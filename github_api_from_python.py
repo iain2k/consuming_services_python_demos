@@ -8,7 +8,6 @@
 #           'consuming_services_python_demos'
 
 import requests
-import json
 
 
 def main():
@@ -18,11 +17,19 @@ def main():
         user, repo)
 
     resp = requests.get(url)
+
+    # status_code is not always 200.  Code 201 is success for a POST requests
     if resp.status_code != 200:
         print('Error accessing repo: {}'.format(resp.status_code))
         return
 
-    print(json.dumps(json.loads(resp.text), indent=True))
+    repo_data = resp.json()
+    clone = repo_data.get('clone_url', 'ERROR: NO DATA')
+
+    print("To clone {}'s repo named {}".format(user, repo))
+    print("The command is: ")
+    print()
+    print("git clone {}".format(clone))
 
 
 def get_repo_info():
