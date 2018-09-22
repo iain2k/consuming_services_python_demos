@@ -2,10 +2,18 @@
 
 import requests
 
-print('hi from requests')
 
-url = 'https://talkpython.fm'
+def main():
+    print('hi from requests')
 
-resp = requests.get(url)
+    url = 'https://talkpython.fm'
+    resp = requests.get(url)
+    if resp.status_code != 200:
+        print('Error requesting URL, {}'.format(resp.status_code))
+        return
 
-print(resp)
+    print(resp.text[:500])
+
+
+if __name__ == '__main__':
+    main()
