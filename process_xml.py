@@ -36,11 +36,12 @@ def main():
     building = input("What building are you in? ")
     room = input("What room are you in?")
 
-    room_course = [
+    room_courses = [
         c.title for c in courses if c.building == building and c.room == room
     ]
 
-    print(room_course)
+    for c in room_courses:
+        print("* " + c)
 
 
 if __name__ == "__main__":
