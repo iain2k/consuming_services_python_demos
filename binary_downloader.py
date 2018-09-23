@@ -4,6 +4,7 @@
 import requests
 from xml.etree import ElementTree
 import os
+import shutil
 
 
 def get_episode_files(url):
@@ -20,19 +21,31 @@ def get_episode_files(url):
 
 
 def download_file(file, dest_folder):
+
     resp = requests.get(file, stream=True)
     if resp.status_code != 200:
         return None
 
+    resp.decode_content = True
+
+    dest_folder = os.path.expanduser(dest_folder)
+    if not os.path.exists(dest_folder):
+        print('making destination folder', dest_folder)
+        os.makedirs(dest_folder)
+    else:
+        print('Directory {} already exists'.format(dest_folder))
+
     base_file = os.path.basename(file)
     dest_file = os.path.join(
-        os.path.abspath(dest_folder),
+        dest_folder,
         base_file)
-
+    print('DEST_FOLDER', dest_folder)
     print('BASE FILE', base_file)
     print('DEST_FILE', dest_file)
+    print()
 
-    # dest_file = open()
+    with open(dest_file, 'wb') as fileout:
+        shutil.copyfileobj(resp.raw, fileout)
 
 
 def main():
